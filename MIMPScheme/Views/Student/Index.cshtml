@@ -1,0 +1,181 @@
+﻿@model StudentModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<script>
+    function validateForm() {
+        let name = document.forms["myForm"]["name"].value;
+        let address = document.forms["myForm"]["Address"].value;
+        let phonenumber = document.forms["myForm"]["phonenumber"].value;
+        let email = document.forms["myForm"]["email"].value; 
+        let image = document.forms["myForm"]["image"].value;
+        let country = document.forms["myForm"]["country"].value;
+        if (name == "") {
+            alert("Name must be filled");
+            return false;
+        }
+        if (country == "") {
+            alert("country must be filled");
+            return false;
+        }
+        if (address == "") {
+            alert("address must be filled");
+            return false;
+        }
+        if (phonenumber == "") {
+            alert("phone number must be filled");
+            return false;
+        }
+        if (email == "") {
+            alert("email must be filled");
+            return false;
+        }
+        if (image == "") {
+            alert("image must be filled");
+            return false;
+        }
+    }
+
+    function validatePhoneNumber() {
+        const phoneNumber = document.getElementById('phoneNumber').value.trim();
+        const pattern = /^\d{10}$/;
+        const isValid = pattern.test(phoneNumber);
+        document.getElementById('phoneValidationMsg').textContent = isValid ? '' : 'Please enter a valid 10-digit phone number.';
+        return isValid;
+    }
+
+  function validation() {
+  let form = document.getElementById('form')
+  let email = document.getElementById('email').value
+  let text = document.getElementById('text')
+  let pattern = /^[^ ]+@@[^ ]+\.[a-z]{2,3}$/
+
+  if (email.match(pattern)) {
+    form.classList.add('valid')
+    form.classList.remove('invalid')
+    text.innerHTML = "Your Email Address in valid"
+    text.style.color = '#00ff00'
+  } else {
+    form.classList.remove('valid')
+    form.classList.add('invalid')
+    text.innerHTML = "Please Enter Valid Email Address"
+    text.style.color = '#ff0000'
+  }
+
+  if (email == '') {
+    form.classList.remove('valid')
+    form.classList.remove('invalid')
+    text.innerHTML = ""
+    text.style.color = '#00ff00'
+  }
+}
+</script>
+<style>
+    /* #form #email {
+        width: 300px;
+        background: #292929;
+        outline: none;
+        border: none;
+        padding: 10px;
+        border-radius: 6px;
+        color: #fff;
+        font-style: 18px;
+    } */
+
+    #form .input-box {
+        position: relative;
+    }
+
+    #text {
+        display: block;
+        color: #000;
+        font-weight: 300;
+        font-style: italic;
+        padding: 5px;
+    }
+
+    #form.invalid .input-box::before {
+        content: '';
+        position: absolute;
+        right: 12px;
+        top: 29px;
+        width: 24px;
+        height: 24px;
+        background: url(https://fadzrinmadu.github.io/hosted-assets/email-validation-check-using-javascript/invalid.png);
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+
+    #form.valid .input-box::before {
+        content: '';
+        position: absolute;
+        right: 12px;
+        top: 29px;
+        width: 24px;
+        height: 24px;
+        background: url(https://fadzrinmadu.github.io/hosted-assets/email-validation-check-using-javascript/valid.png);
+        -webkit-background-size: cover;
+        background-size: cover;
+    }
+</style>
+
+<form method="post" enctype="multipart/form-data" name="myForm" onsubmit="return validateForm()" asp-action="@(Model.Id > 0 ? "Edit" : "Insert")" id="form">
+    <div class="col-4">
+        <input type="hidden" asp-for="Id"/>
+        <label asp-for="name">Name:</label>
+        <input asp-for="name" class="form-control" placeholder="Enter your name" autocomplete="off"/>
+    </div>
+
+    <div class="col-4">
+        <label asp-for="Address">Address:</label>
+        <textarea asp-for="Address" class="form-control" placeholder="Address 20 character...." autocomplete="off"></textarea>
+    </div>
+
+    <div class="col-4">
+        <label asp-for="phonenumber">Phone Number:</label>
+        <input asp-for="phonenumber" class="form-control" id="phoneNumber" onchange="validatePhoneNumber()" placeholder="Enter your mobile number" autocomplete="off" />
+        <div id="phoneValidationMsg" style="color:red;"></div>
+    </div>
+    
+    <div class="col-4">
+    <label>Country :</label>
+     <select asp-for="country" asp-items="@(new SelectList(ViewBag.Country, "CId", "CName"))" , class="form-control">
+    <option>Please select country</option>
+    </select>
+    </div>
+    <br />
+    <label>Hobby : </label><br/>
+    <div>
+
+        @for (var i = 0; i<Model.tblDepartments.Count; i++)
+        {
+            <input type="checkbox" asp-for="@Model.tblDepartments[i].ischecked" name="Hobbys" value="@Model.tblDepartments[i].DeptName"/>
+             @Model.tblDepartments[i].DeptName
+            <input type="hidden" asp-for="@Model.tblDepartments[i].DeptName">
+        }
+        
+    </div>
+<br />
+    <div>
+        <label>Gender : </label><br />
+        Male <input type="radio" name="Gender" value="Male" asp-for="Checkedproperties"/>
+        Female <input type="radio" name="Gender" value="Female" asp-for="Checkedproperties"/>
+        Other <input type="radio" name="Gender" value="Other" asp-for="Checkedproperties"/>
+    </div>
+    <br />
+    <div class="col-4 input-box">
+        <label>Email:</label>
+        <input asp-for="email" class="form-control" id="email" onkeydown="validation()" placeholder="Enter your email" autocomplete="off"/>
+        <span id="text"></span>
+    </div>
+    <br />
+    <div class="col-4">
+        <label asp-for="image">Image:</label>
+        <input type="file" asp-for="image" class="form-control-file">
+    </div>
+    <br />
+    <input type="submit" class="btn btn-primary" value="@(!string.IsNullOrEmpty(ViewBag.btn) ? ViewBag.btn : "Save")" /> &nbsp;&nbsp; @Html.ActionLink("Details", "Details", "Student", null, new { @class = "btn btn-primary" })
+</form>

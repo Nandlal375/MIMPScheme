@@ -1,0 +1,276 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    td {
+        border: 1px solid #fff !important;
+    }
+    .footer > span
+    {
+        font-size:13px;
+    }
+    .footer {
+        margin-top: 25px;
+        font-size: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    button {
+        padding: 7px 15px;
+        color:black;
+        background-color: transparent;
+        font-size: 10px;
+        cursor: pointer;
+    }
+        button.active, button:hover {
+            background-color: #0d6efd;
+            color:white;
+        }
+
+    .entryTable > tbody > tr > td {
+        border: 1px solid #d2c7c9a1 !important;
+    }
+</style>
+
+<html>
+    <head>
+@* 
+    <title></title>
+    <link href="~/include/admin.css" rel="stylesheet" />
+    <link href="~/mos-css/mos-style.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/custom.js"></script>
+    <link href="~/include/jquery-ui.css" rel="stylesheet" />
+    <script src="~/library/jquery.multi-select.js"></script>
+    <link href="~/mos-css/jquery.multiselect.css" rel="stylesheet" />
+ *@ 
+  <link href="~/include/admin.css" rel="stylesheet"/>
+    <link href="~/mos-css/mos-style.css" rel="stylesheet"/>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/custom.js"></script>
+    <link href="~/widget/css/jquery.multiselect.css" rel="stylesheet" />
+    <link href="~/widget/style.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/redmond/jquery-ui.css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+    <style>
+        .btn-group-xs > .btn, .btn-xs {
+            padding: 1px 5px;
+            font-size: 12px;
+            line-height: 1.5;
+            border-radius: 3px;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #337ab7;
+            border-color: #2e6da4;
+        }
+
+        #leftBar ul li a {
+            padding: 10px 10px 10px 25px !important;
+        }
+        .btn-group-xs > .btn, .btn-xs {
+            padding: 1px 5px;
+            font-size: 12px;
+            line-height: 1.5;
+            border-radius: 3px;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #337ab7;
+            border-color: #2e6da4;
+        }
+    </style>
+    </head>
+    <body>
+        <div id="header">
+            <div id="wrapper">
+            <div id="rightContent">
+                <table width="100%" border="0" cellspacing="0" cellpadding="20" id="MainTable">
+                    <tbody>
+                        <tr id="HidelistTableHeader">
+                            <td>
+                                <div class="table">
+                                    <table border="0" align="center" cellpadding="2" cellspacing="1" class="text" style="table-layout: fixed; width: 100%">
+                                        <thead>
+                                    <tr style="text-align:center;" id="listTableHeader">
+                                        <td style="width:18%;">User Name</td>
+                                        <td style="width:14%;">State Name</td>
+                                        <td style="width:57%;">District Name</td>
+                                        <td style="width:8%;">Last Login</td>
+                                        <td style="width:17%;">Status</td>
+                                    </tr>
+                                        </thead>
+                                        <tbody id="tblUserdata">
+
+                                        </tbody>    
+                                </table>
+                                    <div colspan="7" align="right" style="margin-top:10px;">
+                                    <input name="btnAddUser" type="button" id="btnAddUser" value="Add State" class="box" onClick="addStateUser()">
+                                    <input name="btnAddUser" type="button" id="btnAddUser" value="Add User" class="box" onClick="ShowAddUser()">
+                                    </div>
+                                    <div class="footer">
+                                        <span>Showing 1 to 10 of 60 entries</span>
+                                        <div class="index_buttons">
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr style="display:none;" id="ShowAddStateUser">
+                            <td>
+                                <p class="errorMessage" style="display:none;" id="errorMsg">Username already taken. Choose another one</p>
+                                <form method="post" enctype="multipart/form-data" name="frmAddUser" id="frmAddUser" autocomplete="off">
+
+                                    <table width="100%" border="0" align="center" cellpadding="5" cellspacing="1" class="entryTable">
+                                        <tbody>
+                                            <tr>
+                                                <td width="150" class="label">State</td>
+
+                                                <td id='dropdownState'>
+                                                    <select id="state" name="state"></select>
+                                                </td>
+
+                                            </tr>
+
+                                            <tr>
+                                                <td width="150" class="label">User Name (Email Id)</td>
+                                                <td class="content"><input name="txtUserName" type="text" class="box" id="txtUserName" size="30" maxlength="30" autocomplete="off"></td>
+                                            </tr>
+                                            <tr>
+                                                <td width="150" class="label">Password</td>
+                                                <td class="content"> <input name="txtPassword" type="password" class="box" id="txtPassword" value="" size="20" maxlength="20" autocomplete="off"> <div class="pass-errors" style="color:red;"></div></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p align="center">
+                                        <input name="btnAddUser" type="button" id="btnAddUser" value="Add User" onclick="addStateUserForm();" class="box">
+                                        &nbsp;&nbsp;<input name="btnCancel" type="button" id="btnCancel" value="Cancel" onclick="ShowListHeader();" class="box">
+                                    </p>
+                                </form>
+                            </td>
+                        </tr>
+                </table>
+                <table border="0" align="center" cellpadding="5" cellspacing="1" class="entryTable" style="display:none;table-layout: fixed; width: 100%" id="AddUsertbl">
+                    <p class="errorMessage" style="display:none;" id="errorMsg1">Username already taken. Choose another one</p>
+                    <tbody>
+                        <tr>
+                         <td width="150" class="label">State</td>
+                            <td id='dropdownState1'>
+                                <select id="state1" name="state" onchange="selectstate();"></select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="150" class="label">District</td>
+
+                            <td>
+                               
+                                <div id="disCityMultiSelect1">
+                                    <select id="distric1" name="distric1[]" multiple="multiple">
+                                    </select>
+                                </div>
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td width="150" class="label">User Name (Email Id)</td>
+                            <td class="content"><input name="txtUserName1" type="text" class="box" id="txtUserName1" size="30" maxlength="30" autocomplete="false"></td>
+                        </tr>
+
+                        <tr>
+                            <td width="150" class="label">Password</td>
+                            <td class="content"><input name="txtPassword1" type="password" class="box" id="txtPassword1" value="" size="20" maxlength="20" autocomplete="false"> <div class="pass-errors" style="color:red;"></div></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2" rowspan="1"><b>First Officer</b></td>
+                        </tr>
+                        <tr>
+                            <td width="150" class="label">Name</td>
+                            <td class="content"><input name="txtname1" type="text" class="box" id="txtname1" value="" required autocomplete="false" /></td>
+                        </tr>
+                        <tr>
+                            <td width="150" class="label">Email</td>
+                            <td class="content"><input name="txtemail1" type="email" class="box" id="txtemail1" value="" required autocomplete="false" /></td>
+                        </tr>
+                        <tr>
+                            <td width="150" class="label">Designation</td>
+                            <td class="content"><input name="txtdesignation1" type="text" class="box" id="txtdesignation1" value="" required autocomplete="false" /></td>
+                        </tr>
+
+
+                        <tr>
+                            <td colspan="2" rowspan="1"><b>Second Officer</b></td>
+                        </tr>
+                        <tr>
+                            <td width="150" class="label">Name</td>
+                            <td class="content"><input name="txtname2" type="text" class="box" id="txtname2" value="" required autocomplete="false" /></td>
+                        </tr>
+                        <tr>
+                            <td width="150" class="label">Email</td>
+                            <td class="content"><input name="txtemail2" type="email" class="box" id="txtemail2" value="" required autocomplete="false" /></td>
+                        </tr>
+                        <tr>
+                            <td width="150" class="label">Designation</td>
+                            <td class="content"><input name="txtdesignation2" type="text" class="box" id="txtdesignation2" value="" required autocomplete="false" /></td>
+                        </tr>
+
+
+                        <tr>
+                            <td colspan="2" rowspan="1"><b>Third Officer</b></td>
+                        </tr>
+                        <tr>
+                            <td width="150" class="label">Name</td>
+                            <td class="content"><input name="txtname3" type="text" class="box" id="txtname3" value="" required autocomplete="false" /></td>
+                        </tr>
+                        <tr>
+                            <td width="150" class="label">Email</td>
+                            <td class="content"><input name="txtemail3" type="email" class="box" id="txtemail3" value="" required autocomplete="false" /></td>
+                        </tr>
+                        <tr>
+                            <td width="150" class="label">Designation</td>
+                            <td class="content"><input name="txtdesignation3" type="text" class="box" id="txtdesignation3" value="" required autocomplete="false" /></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <p align="center" style="display:none;" id="footerbtn">
+                    <input name="btnAddUser1" type="button" id="btnAddUser1" value="Add User" onclick="checkAddUserForm();" class="box">
+                    &nbsp;&nbsp;<input name="btnCancel" type="button" id="btnCancel" value="Cancel" onclick="ShowListHeaderM();" class="box">
+                   
+                </p>
+                <div id="footermodifyBtn" style="display:none;">
+                     <p align="center" id="footerbtnModify">
+                      <input name="btnAddUser" type="button" id="btnAddUser" value="Modify User" onclick="modifyUserForm1();" class="box">
+                       &nbsp;&nbsp;<input name="btnCancel" type="button" id="btnCancel" value="Cancel" onclick="HideModifyForm();" class="box">
+                    </p>
+                </div>
+
+            </div>
+            </div>
+        </div>
+
+        <div class="clear"></div>
+
+        <div id="footer">
+        </div>
+
+
+  <script src="~/widget/src/jquery.multiselect.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#distric1").multiselect();
+            //$("#disCityMultiSelect1 select").multiselect();
+        });
+    </script> 
+        </body>
+</html>
+
+

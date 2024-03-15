@@ -1,0 +1,177 @@
+﻿@model IEnumerable<MIMPScheme.Models.StudentModel>
+
+@*
+
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}     
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.22/datatables.min.css" />
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.22/datatables.min.js"></script>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+<script>
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+    // Display a success notification
+    if ('@ViewBag.Message' !== null && '@ViewBag.Message' !== "") {
+        toastr.success('@ViewBag.Message');
+    }
+    else {}
+    
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this item?");
+    }
+    function myFunction() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("datatable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+    }
+   
+
+</script>
+<style>
+#myInput {
+  background-image: url('/css/searchicon.png');
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+</style>
+@Html.ActionLink("ADD", "Index", "Student", null, new { @class = "btn btn-success" })
+<div class="col-4" style="float:right;">
+    <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
+</div>
+<table class="table table-striped display" id="datatable" style="width:100%">
+    <thead>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>Image Path</th>
+        <th>Country</th>
+        <th>Hobby</th>
+        <th>Gender</th>
+        <th>Action</th>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        { 
+                <tr>
+                <td>@item.name</td>
+                <td>@item.Address</td>
+                <td>@item.email</td>
+                <td>@item.phonenumber</td>
+                <td>
+                    <img src="~/Images/@item.imageFileName" style="width:100px; height:100px;">    
+                </td>
+                <td>@item.country</td>
+                <td>@item.Hobby</td>
+                <td>@item.Gender</td>
+                <td>
+                    <input type="hidden" name="@item.imageFileName"/>
+                    <a asp-action="Index" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>&nbsp;&nbsp;
+                    <a asp-action="Delete" asp-route-id="@item.Id" asp-route-imageFileName="@item.imageFileName" onclick="return confirmDelete();" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+       @*  <script>
+            $(document).ready(function () {
+                Datatables();
+            });
+            function Datatables() {
+                $('#datatable').DataTable({
+                    responsive: true,
+                    ordering: false,
+                    searching: false,
+                    info: false,
+                    ordering: false,
+                    paging: true,
+                    pageLength: 10
+                });
+            }
+        </script> *@
+    </tbody>
+</table>
+    <div class="container">
+    @if (pager.TotalPages > 0)
+    {
+    <ul class="pagination justify-content-end">
+            @if (pager.CurrentPage < pager.TotalPages)
+            {
+                <li>
+                    <a class="page-link" asp-controller="Student" asp-action="Details" asp-route-pg="1">First</a>
+
+                </li>
+                <li>
+                    <a class="page-link" asp-controller="Student" asp-action="Details" asp-route-pg="@(pager.CurrentPage - 1)">Previous</a>
+
+                </li>
+            }
+
+        @for(var pge = pager.StartPage; pge<=pager.EndPage; pge++)
+            {
+                <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-controller="Student" asp-action="Details" asp-route-pg="@pge">@pge</a>
+
+                </li>
+
+            }
+            @if (pager.CurrentPage < pager.TotalPages)
+            {
+            <li>
+                    <a class="page-link" asp-controller="Student" asp-action="Details" asp-route-pg="@(pager.CurrentPage + 1)">Next</a>
+
+            </li>    
+            <li>
+                    <a class="page-link" asp-controller="Student" asp-action="Details" asp-route-pg="@(pager.TotalPages)">Last</a>
+
+            </li>
+            }
+        </ul>    
+    }
+</div>

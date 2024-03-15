@@ -1,0 +1,77 @@
+﻿@model List<MIMPScheme.Models.StudentModel>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<script>
+    function validateForm() {
+        let name = document.forms["myForm"]["name"].value;
+        let address = document.forms["myForm"]["Address"].value;
+        let phonenumber = document.forms["myForm"]["phonenumber"].value;
+        let email = document.forms["myForm"]["email"].value;
+        let image = document.forms["myForm"]["image"].value;
+        if (name == "") {
+            alert("Name must be filled");
+            return false;
+        }
+        if (address == "") {
+            alert("address must be filled");
+            return false;
+        }
+        if (phonenumber == "") {
+            alert("phone number must be filled");
+            return false;
+        }
+        if (email == "") {
+            alert("email must be filled");
+            return false;
+        }
+        if (image == "") {
+            alert("image must be filled");
+            return false;
+        }
+    }
+</script>
+<h5 style="text-align:center; background-color:azure; color:burlywood; font-size:xx-large;">Modify Form</h5>
+@foreach (var student in Model)
+{
+    @* <input type="hidden" value="@student.Id" name="id"/> *@
+<form method="post" enctype="multipart/form-data" name="myForm" onsubmit="return validateForm()" asp-action="Edit">
+    <div class="col-4">
+            <label asp-for="@student.name">Name:</label>
+            <input asp-for="@student.name" class="form-control" value="@student.name" name="name" />
+    </div>
+
+    <div class="col-4">
+            <label asp-for="@student.Address">Address:</label>
+            <textarea asp-for="@student.Address" class="form-control" name="Address"></textarea>
+    </div>
+
+    <div class="col-4">
+            <label asp-for="@student.phonenumber">Phone Number:</label>
+            <input asp-for="@student.phonenumber" class="form-control" value="@student.phonenumber" name="phonenumber" />
+    </div>
+         <div class="col-4">
+            <label>Country :</label>
+            @* @Html.DropDownList("Selected", (IEnumerable<SelectListItem>)ViewBag.CountryList) *@
+
+            <select asp-for="@student.Selected" asp-items="@(new SelectList(ViewBag.CountryList,"CID","CName"))" , class="form-control">
+                <option>Please select country</option>
+            </select> 
+        </div>
+ 
+    <div class="col-4">
+            <label asp-for="@student.email">Email:</label>
+            <input asp-for="@student.email" class="form-control" value="@student.email" name="email" />
+    </div>
+    <br />
+    <div class="col-4">
+            <label asp-for="@student.image">Image:</label>
+            <input type="file" asp-for="@student.image" class="form-control-file" value="@student.imageFileName" name="image" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button> &nbsp;&nbsp; @Html.ActionLink("Details", "Details", "Student")
+</form>
+}

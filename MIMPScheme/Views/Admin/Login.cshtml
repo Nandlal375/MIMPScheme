@@ -1,0 +1,195 @@
+﻿
+@{
+    ViewData["Title"] = "Login";
+    Layout = "";
+
+}
+
+
+
+@* <h1>Login</h1> *@
+<!DOCTYPE html>
+<!-- Created By CodingLab - www.codinglabweb.com -->
+
+<html>
+
+<head>
+
+    <meta http-equiv="cache-control" content="max-age=0" />
+
+    <meta http-equiv="cache-control" content="no-cache" />
+
+    <meta http-equiv="expires" content="-1" />
+
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+
+    <meta http-equiv="pragma" content="no-cache" />
+
+
+
+    <link rel="shortcut icon" href="stylesheet/img/devil-icon.png" /> <!--Pemanggilan gambar favicon-->
+
+    <link rel="stylesheet" type="text/css" href="~/mos-css/mos-style.css" /> <!--pemanggilan file css-->
+
+    <script language="javascript" src="~/library/jquery.min.js"></script>
+
+    <script language="javascript" src="~/library/jquery.md5.min.js"></script>
+
+    <script language="javascript" src="~/library/sha256.js"></script>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('#btnLogin').click(function (e) {
+
+                var strUserName = $('#txtUserName').val();
+
+                var strPassword = $('#txtPassword').val();
+
+                var strLetter = $('#txt_letters_code').val();             
+
+                if (strUserName.length == 0) {
+
+                    alert('Please enter user name');
+
+                    e.preventDefault();
+
+                } else if (strPassword.length == 0) {
+
+                    alert('Please enter user password');
+
+                    e.preventDefault();
+
+                } else if (strLetter.length == 0) {
+
+                    alert('Please enter captcha code');
+
+                    e.preventDefault();
+
+                } else {
+
+                    var strMD5 = sha256(strPassword);
+                    ////           var strMD5 = $.md5(strPassword);
+
+                    //			strMD5 = strMD5+strKey;
+                    //
+                    //			strMD5 = sha256(strMD5);
+
+                    $('#txtPassword').val(strMD5);
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+</head>
+
+
+
+<body>
+
+    <div id="header">
+
+        <div class="inHeaderLogin"></div>
+
+    </div>
+
+    <div style="text-align:center;color:#900;margin-top:10px;"><?php echo $errorMessage;?></div>
+
+    <div id="loginForm" style="height:300px;margin: 10px auto 0;">
+
+        <div class="headLoginForm">
+
+            Login Administrator
+
+        </div>
+
+        <div class="fieldLogin">
+
+            <form method="post" name="frmLogin" id="frmLogin"  action="/Admin/CustomCaptcha" >
+                @Html.AntiForgeryToken()
+                <label>Username</label><br>
+
+                <input name="txtUserName" id="txtUserName" type="text" class="login" size="10" maxlength="20" value="" autocomplete="off" /> <br>
+
+                <label>Password</label><br>
+
+                <input name="txtPassword" id="txtPassword" type="password" class="login" value="" autocomplete="off" />
+                
+                  <table>
+                    <tr>
+                        <td><img src="/Admin/GetCaptchaImage" style="width:70px;height:30px" title="Captcha" /></td>
+                        <td>
+                            <input name="txt_letters_code" type="text" id="txt_letters_code" class="grievance-textbox" placeholder="Enter the side code here" />
+                                <p style="font-weight:bold;color:red;">@ViewBag.CaptchaError</p>
+                            
+                        </td>
+                    </tr>
+                </table>
+                <input name="btnLogin" id="btnLogin" type="submit" class="button" value="Login">&nbsp;&nbsp;<a href="/Admin/forgotpassword">Forgot Password</a><br>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+@* <html lang="en" dir="ltr"> *@
+@* <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="~/css/SiteStyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+     
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/jquery.unobtrusive-ajax.js"></script>
+</head> *@
+@* <body>
+    <div class="container">
+        <div class="wrapper">
+            <div class="title"><span>Login Administrator</span></div>
+            <form action="#">
+                <div class="row">
+                    <i class="fas fa-user"></i>
+                    <input type="text" placeholder="Email or Phone" required>
+                </div>
+                <div class="row">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" placeholder="Password" required>
+                </div>
+               
+                <table><tr><td><img src="/Admin/GetCaptchaImage" title="Captcha" /></td>
+                        <td>
+                            <div class="row">
+                                <input type="text" name="clientCaptcha" placeholder="Write above text exactly" required />
+                                <p style="font-weight:bold;color:red;">@ViewBag.CaptchaError</p>
+                            </div>
+                        </td></tr></table>
+                    
+                
+                
+                <div class="row button">
+                    <input type="submit" value="Login">
+                    <div class="pass"><a href="#">Forgot password?</a></div>
+                </div>
+              @*   <div class="signup-link">Not a member? <a href="#">Signup now</a></div> 
+            </form>
+        </div>
+    </div>
+
+</body>
+</html> *@
+

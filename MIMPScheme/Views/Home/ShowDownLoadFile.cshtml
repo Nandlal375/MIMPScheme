@@ -1,0 +1,26 @@
+﻿@model IEnumerable<WebApplication1.Models.ReportModel>
+@{}
+
+<h4>List Of Download File</h4>
+<table>
+    <thead>
+        <tr>
+            <th>FileName</th>
+            <th>Download</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+       {
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FileName</td>
+                <td>
+                        @Html.ActionLink("Download", "Download", new { fileName = item.FileName})
+                </td>
+            </tr>
+        }
+   }
+    </tbody>
+</table>
